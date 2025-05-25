@@ -228,7 +228,7 @@ export function getInfoLinks(data) {
 }
 
 export async function getParkData() {
-  const parkData = await getJson("parks?parkCode=yell");
+  const parkData = await getJson("parks?parkCode=yell ");
   return parkData.data[0];
 }
 
@@ -237,7 +237,7 @@ export async function getParkAlerts(code) {
   return parkData.data;
 }
 
-export async function getVistorCenterData(code) {
+export async function getParkVisitorCenters(code) {
   const parkData = await getJson(`visitorcenters?parkCode=${code}`);
   return parkData.data;
 }

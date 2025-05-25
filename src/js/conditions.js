@@ -1,35 +1,44 @@
 import "../css/style.css";
-import "../css/pages/conditions.css";
-import { getParkData, getParkAlerts, getVistorCenterData } from "./parkService.mjs";
-import { alertTemplate, VisitorCenterTemplate, ActivitiesTemplate } from "./templates.mjs";
+import "../css/conditions.css";
+import {
+  getParkData,
+  getParkAlerts,
+  getParkVisitorCenters
+} from "./parkService.mjs";
+import {
+  activityListTemplate,
+  alertTemplate,
+  visitorCenterTemplate
+} from "./templates.mjs";
 import setHeaderFooter from "./setHeaderFooter.mjs";
 
 function setAlerts(alerts) {
-    const alertsEl = document.querySelector(".alerts");
-    const html = alerts.map(alertTemplate);
-    alertsEl.insertAdjacentHTML("beforeend", html.join(""));
+  const alertsContainer = document.querySelector(".alerts > ul");
+  alertsContainer.innerHTML = "";
+  const html = alerts.map(alertTemplate);
+  alertsContainer.insertAdjacentHTML("afterbegin", html.join(""));
 }
 
 function setVisitorCenters(centers) {
-    const centersEl = document.querySelector(".visitor-centers ul");
-    const html = centers.map(VisitorCenterTemplate);
-    centersEl.insertAdjacentHTML("beforeend", html.join(""));
+  const centersContainer = document.querySelector(".visitor ul");
+  const html = centers.map(visitorCenterTemplate);
+  centersContainer.insertAdjacentHTML("afterbegin", html.join(""));
 }
 
 function setActivities(activities) {
-    const activitiesEl = document.querySelector(".activities ul");
-    const html = activities.map(ActivitiesTemplate);
-    activitiesEl.insertAdjacentHTML("beforeend", html.join(""));
+  const activitiesContainer = document.querySelector(".activities ul");
+  const html = activityListTemplate(activities);
+  activitiesContainer.insertAdjacentHTML("afterbegin", html);
 }
 
 async function init() {
-    const parkData = await getParkData();
-    const alerts = await getParkAlerts(parkData.parkCode);
-    const vistorCenters = await getVistorCenterData(parkData.parkCode);
-    setHeaderFooter(parkData);
-    setAlerts(alerts);
-    setVisitorCenters(vistorCenters);
-    setActivities(parkData.activities);
+  const parkData = await getParkData();
+  const alerts = await getParkAlerts(parkData.parkCode);
+  const visitorCenters = await getParkVisitorCenters(parkData.parkCode);
+  setHeaderFooter(parkData);
+  setAlerts(alerts);
+  setVisitorCenters(visitorCenters);
+  setActivities(parkData.activities);
 }
 
 init();
